@@ -1,0 +1,44 @@
+name: Download CDN files
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  download-cdn-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create vendor directory
+        run: mkdir -p vendor/css vendor/js
+
+      - name: Download Bootstrap CSS
+        run: curl -s -o vendor/css/bootstrap.min.css https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css
+
+      - name: Download Bootstrap JS
+        run: curl -s -o vendor/js/bootstrap.bundle.min.js https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js
+
+      - name: Download jQuery
+        run: curl -s -o vendor/js/jquery.min.js https://code.jquery.com/jquery-3.6.0.min.js
+
+      - name: Download MetisMenu
+        run: curl -s -o vendor/css/metisMenu.min.css https://cdn.jsdelivr.net/npm/metismenu@2.7.9/dist/metisMenu.min.css
+        run: curl -s -o vendor/js/metisMenu.min.js https://cdn.jsdelivr.net/npm/metismenu@2.7.9/dist/metisMenu.min.js
+
+      - name: Download SB Admin 2
+        run: curl -s -o vendor/css/sb-admin-2.min.css https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/css/sb-admin-2.min.css
+        run: curl -s -o vendor/js/sb-admin-2.min.js https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.1.4/js/sb-admin-2.min.js
+
+      - name: Download Font Awesome
+        run: curl -s -o vendor/css/fontawesome.min.css https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/all.min.css
+
+      - name: Commit changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          git commit -m "Download CDN files"
+          git push
